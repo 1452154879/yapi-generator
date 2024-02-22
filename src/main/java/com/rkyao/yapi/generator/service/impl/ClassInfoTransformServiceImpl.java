@@ -1,5 +1,6 @@
 package com.rkyao.yapi.generator.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.rkyao.yapi.generator.config.YapiGeneratorConfig;
 import com.rkyao.yapi.generator.entity.template.ApiInfo;
@@ -89,13 +90,22 @@ public class ClassInfoTransformServiceImpl implements ClassInfoTransformService 
             // todo 支持body中的 form、file、raw格式
             YapiPropertiesDTO reqPropertiesDTO = JSONObject.parseObject(interfaceInfoDTO.getData().getReqBodyOther(), YapiPropertiesDTO.class);
             // 参数信息解析
-            List<EntityInfo> reqEntityInfoList = analysisEntityInfo(reqPropertiesDTO, "RootParam", new ArrayList<>());
+            List<EntityInfo> reqEntityInfoList = analysisEntityInfo(reqPropertiesDTO, "Dto", new ArrayList<>());
 
             // 返回信息字符串
             YapiPropertiesDTO respPropertiesDTO = JSONObject.parseObject(interfaceInfoDTO.getData().getResBody(),
                     YapiPropertiesDTO.class);
+            String type=null;
+            if (respPropertiesDTO.getProperties().get("data")!=null) {
+                type = respPropertiesDTO.getProperties().get("data").getType();
+                if(FieldType.ARRAY.getSource().equals(type)) {
+                    respPropertiesDTO.setProperties(respPropertiesDTO.getProperties().get("data").getItems().getProperties());
+                }else if(FieldType.OBJECT.getSource().equals(type)){
+                    respPropertiesDTO.setProperties(respPropertiesDTO.getProperties().get("data").getProperties());
+                }
+            }
             // 返回信息解析
-            List<EntityInfo> respEntityInfoList = analysisEntityInfo(respPropertiesDTO, "RootDTO", new ArrayList<>());
+            List<EntityInfo> respEntityInfoList = analysisEntityInfo(respPropertiesDTO, "Vo", new ArrayList<>());
 
             List<EntityInfo> allEntityInfoList = new ArrayList<>();
             allEntityInfoList.addAll(reqEntityInfoList);
@@ -112,7 +122,7 @@ public class ClassInfoTransformServiceImpl implements ClassInfoTransformService 
             apiInfo.setDesc(StringUtils.isEmpty(dataDTO.getTitle()) ? "这是注释" : dataDTO.getTitle());
             apiInfo.setMethodName(methodName);
             apiInfo.setParamList(analysisParamList(interfaceInfoDTO.getData(), reqEntityInfoList));
-            apiInfo.setResponseType(analysisResponseType(respPropertiesDTO, respEntityInfoList));
+            apiInfo.setResponseType(analysisResponseType(respPropertiesDTO, respEntityInfoList,type));
             apiInfo.setEntityInfoList(allEntityInfoList);
 
             apiInfoList.add(apiInfo);
@@ -183,15 +193,24 @@ public class ClassInfoTransformServiceImpl implements ClassInfoTransformService 
         return fieldInfoList;
     }
 
-    private String analysisResponseType(YapiPropertiesDTO respPropertiesDTO, List<EntityInfo> respEntityInfoList) {
+    private String analysisResponseType(YapiPropertiesDTO respPropertiesDTO, List<EntityInfo> respEntityInfoList,String resultType) {
         // fixme respPropertiesDTO 空指针
         if (respPropertiesDTO == null || StringUtils.isEmpty(respPropertiesDTO.getType()) || CollectionUtils.isEmpty(respEntityInfoList)) {
             return "void";
         }
-        if (!FieldType.OBJECT.getSource().equals(respPropertiesDTO.getType())) {
-            return FieldType.getFieldType(respPropertiesDTO.getType()).getTarget();
+        String resultStr="ResultData<%s>";
+        String fieldTypeStr="";
+        if (!FieldType.OBJECT.getSource().equals(resultType) && !FieldType.ARRAY.getSource().equals(resultType)) {
+            fieldTypeStr = FieldType.getFieldType(respPropertiesDTO.getType()).getTarget();
+        }else if(FieldType.ARRAY.getSource().equals(resultType)){
+            fieldTypeStr = "List<"+respEntityInfoList.get(0).getClassName()+">";
+        }else{
+            fieldTypeStr = respEntityInfoList.get(0).getClassName();
         }
-        return respEntityInfoList.get(0).getClassName();
+        if ("".equals(fieldTypeStr)){
+            fieldTypeStr="Object";
+        }
+        return String.format(resultStr,fieldTypeStr);
     }
 
     public static void main(String[] args) {

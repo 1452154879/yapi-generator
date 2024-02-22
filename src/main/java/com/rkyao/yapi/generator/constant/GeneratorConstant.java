@@ -42,7 +42,8 @@ public class GeneratorConstant {
      * entity class文件保存目录
      */
     public static final String ENTITY_PATH = OUTPUT + SEPARATOR + "%s" + SEPARATOR + "entity";
-
+    public static final String ENTITY_DTO_PATH = ENTITY_PATH+SEPARATOR+"%s"+"Dto";
+    public static final String ENTITY_VO_PATH = ENTITY_PATH+SEPARATOR+"%s"+"Vo";
     /**
      * controller ftl文件路径
      */
