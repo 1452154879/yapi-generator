@@ -20,9 +20,9 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/")
+@Slf4j
 public class ${serviceName}Controller {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(${serviceName}Controller.class);
 
     @Autowired
     private ${serviceName}Service ${serviceName?uncap_first}Service;
@@ -38,7 +38,7 @@ public class ${serviceName}Controller {
      * @return ${api.responseType?uncap_first}
     </#if>
      */
-    @RequestMapping(value = "${api.path}", method = RequestMethod.${api.httpMethod})
+    @PostMapping(value = "${api.path}")
     public ${api.responseType} ${api.methodName}(<#list api.paramList as param><#if param.annotation??>${param.annotation} </#if>${param.type} ${param.name}<#if param_has_next>, </#if></#list>) {
     <#if api.responseType != "void">
         return ${serviceName?uncap_first}Service.${api.methodName}(<#list api.paramList as param>${param.name}<#if param_has_next>, </#if></#list>);
