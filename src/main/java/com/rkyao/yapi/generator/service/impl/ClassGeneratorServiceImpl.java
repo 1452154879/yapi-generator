@@ -68,7 +68,6 @@ public class ClassGeneratorServiceImpl implements ClassGeneratorService {
                     }else if(entityInfo.getClassName().endsWith("Vo")){
                         entityBasePath=String.format(GeneratorConstant.ENTITY_VO_PATH, basePath,classDefaultName);
                     }
-                    entityInfo.setClassName(entityPrefix+entityInfo.getClassName());
                     String entityPath = entityBasePath + GeneratorConstant.SEPARATOR + entityInfo.getClassName() + ".java";
                     freemarkerGenerator.createFile(GeneratorConstant.ENTITY_FTL, entityPath, entityInfo);
                 }

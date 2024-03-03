@@ -17,6 +17,7 @@ import com.rkyao.yapi.generator.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -143,7 +144,7 @@ public class ClassInfoTransformServiceImpl implements ClassInfoTransformService 
             String newName = StringUtil.capitalizeFirstLetter(methodName) + entityInfo.getClassName();
             classNameMap.put(oldName, newName);
 
-            entityInfo.setClassName(newName);
+            entityInfo.setClassName(entityPrefix+newName);
         }
         // 实体类中的字段有包含实体类的，也加上接口名
         for (EntityInfo entityInfo : entityInfoList) {
@@ -182,6 +183,7 @@ public class ClassInfoTransformServiceImpl implements ClassInfoTransformService 
         if (!CollectionUtils.isEmpty(reqEntityInfoList)) {
             EntityInfo entityInfo = reqEntityInfoList.get(0);
             FieldInfo fieldInfo = new FieldInfo();
+            entityInfo.setClassName(entityInfo.getClassName());
             fieldInfo.setType(entityInfo.getClassName());
             fieldInfo.setName(StringUtil.lowercaseFirstLetter(entityInfo.getClassName()));
             fieldInfo.setDesc(entityInfo.getDesc());
@@ -192,7 +194,8 @@ public class ClassInfoTransformServiceImpl implements ClassInfoTransformService 
 
         return fieldInfoList;
     }
-
+    @Value("${yapi.generator.class.entityPrefix}")
+    private String entityPrefix;
     private String analysisResponseType(YapiPropertiesDTO respPropertiesDTO, List<EntityInfo> respEntityInfoList,String resultType) {
         // fixme respPropertiesDTO 空指针
         if (respPropertiesDTO == null || StringUtils.isEmpty(respPropertiesDTO.getType()) || CollectionUtils.isEmpty(respEntityInfoList)) {
