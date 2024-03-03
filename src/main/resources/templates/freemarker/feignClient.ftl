@@ -16,14 +16,9 @@ import java.util.List;
  * @author ${classAuthor}
  * @date ${.now?string("yyyy/MM/dd")}
  */
-@RestController
-@RequestMapping("/")
-@Slf4j
-public class ${serviceName}Controller {
-
-
-    @Autowired
-    private ${serviceName}Service ${serviceName?uncap_first}Service;
+@Transactional(propagation = Propagation.NOT_SUPPORTED)
+@FeignClient(name = "${serviceName}Client", url = "${r'${gateway.url}'}", contextId = "${serviceName}Client" configuration = FeignRequestInterceptor.class)
+public class ${serviceName}Client {
 
     <#list apiList as api>
     /**
@@ -37,11 +32,7 @@ public class ${serviceName}Controller {
     </#if>
      */
     @PostMapping(value = "${api.path}")
-    public ${api.responseType} ${api.methodName}(<#list api.paramList as param><#if param.annotation??>${param.annotation} </#if>${param.type} ${param.name}<#if param_has_next>, </#if></#list>) {
-    <#if api.responseType != "void">
-        return ${serviceName?uncap_first}Service.${api.methodName}(<#list api.paramList as param>${param.name}<#if param_has_next>, </#if></#list>);
-    </#if>
-    }
+    public ${api.responseType} ${api.methodName}(<#list api.paramList as param><#if param.annotation??>${param.annotation} </#if>${param.type} ${param.name}<#if param_has_next>, </#if></#list>);
 
     </#list>
 }

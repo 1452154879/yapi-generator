@@ -29,6 +29,8 @@ public class ClassGeneratorServiceImpl implements ClassGeneratorService {
     private static final Logger logger = LoggerFactory.getLogger(ClassGeneratorServiceImpl.class);
     @Value("${yapi.generator.class.defaultName:My}")
     private String classDefaultName;
+    @Value("${yapi.generator.class.entityPrefix}")
+    private String entityPrefix;
     @Autowired
     private FreemarkerGenerator freemarkerGenerator;
 
@@ -48,9 +50,12 @@ public class ClassGeneratorServiceImpl implements ClassGeneratorService {
 
             // 生成controller、service、impl类文件
             String controllerPath = String.format(GeneratorConstant.CONTROLLER_PATH, basePath) + GeneratorConstant.SEPARATOR + serviceInfo.getServiceName() + "Controller.java";
+            String feignPath = String.format(GeneratorConstant.FEIGN_PATH, basePath) + GeneratorConstant.SEPARATOR + serviceInfo.getServiceName() + "Client.java";
             String servicePath = String.format(GeneratorConstant.SERVICE_PATH, basePath) + GeneratorConstant.SEPARATOR + serviceInfo.getServiceName() + "Service.java";
             String implPath = String.format(GeneratorConstant.IMPL_PATH, basePath) + GeneratorConstant.SEPARATOR + serviceInfo.getServiceName() + "ServiceImpl.java";
+
             freemarkerGenerator.createFile(GeneratorConstant.CONTROLLER_FTL, controllerPath, serviceInfo);
+            freemarkerGenerator.createFile(GeneratorConstant.FEIGN_FTL, feignPath, serviceInfo);
             freemarkerGenerator.createFile(GeneratorConstant.SERVICE_FTL, servicePath, serviceInfo);
             freemarkerGenerator.createFile(GeneratorConstant.IMPL_FTL, implPath, serviceInfo);
 
@@ -63,6 +68,7 @@ public class ClassGeneratorServiceImpl implements ClassGeneratorService {
                     }else if(entityInfo.getClassName().endsWith("Vo")){
                         entityBasePath=String.format(GeneratorConstant.ENTITY_VO_PATH, basePath,classDefaultName);
                     }
+                    entityInfo.setClassName(entityPrefix+entityInfo.getClassName());
                     String entityPath = entityBasePath + GeneratorConstant.SEPARATOR + entityInfo.getClassName() + ".java";
                     freemarkerGenerator.createFile(GeneratorConstant.ENTITY_FTL, entityPath, entityInfo);
                 }
@@ -73,6 +79,7 @@ public class ClassGeneratorServiceImpl implements ClassGeneratorService {
 
     private void initDirectory(String basePath,String classDefaultName) {
         new File(String.format(GeneratorConstant.CONTROLLER_PATH, basePath)).mkdirs();
+        new File(String.format(GeneratorConstant.FEIGN_PATH, basePath)).mkdirs();
         new File(String.format(GeneratorConstant.SERVICE_PATH, basePath)).mkdirs();
         new File(String.format(GeneratorConstant.IMPL_PATH, basePath)).mkdirs();
         new File(String.format(GeneratorConstant.ENTITY_PATH, basePath)).mkdirs();

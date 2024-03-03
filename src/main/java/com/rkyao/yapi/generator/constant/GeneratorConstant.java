@@ -27,7 +27,10 @@ public class GeneratorConstant {
      * controller class文件保存目录
      */
     public static final String CONTROLLER_PATH = OUTPUT + SEPARATOR + "%s" + SEPARATOR + "controller";
-
+    /**
+     * FEIGN class文件保存目录
+     */
+    public static final String FEIGN_PATH = OUTPUT + SEPARATOR + "%s" + SEPARATOR + "feign";
     /**
      * service class文件保存目录
      */
@@ -48,7 +51,10 @@ public class GeneratorConstant {
      * controller ftl文件路径
      */
     public static final String CONTROLLER_FTL = "/freemarker/controller.ftl";
-
+    /**
+     * Feign ftl文件路径
+     */
+    public static final String FEIGN_FTL = "/freemarker/feignClient.ftl";
     /**
      * service ftl文件路径
      */
