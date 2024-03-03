@@ -17,7 +17,7 @@ import java.util.List;
  * @date ${.now?string("yyyy/MM/dd")}
  */
 @RestController
-@RequestMapping("/")
+@RequestMapping("/${serviceName?uncap_first}")
 @Slf4j
 public class ${serviceName}Controller {
 
@@ -36,7 +36,7 @@ public class ${serviceName}Controller {
      * @return ${api.responseType?uncap_first}
     </#if>
      */
-    @PostMapping(value = "${api.path}")
+    @PostMapping("/${api.methodName}")
     public ${api.responseType} ${api.methodName}(<#list api.paramList as param><#if param.annotation??>${param.annotation} </#if>${param.type} ${param.name}<#if param_has_next>, </#if></#list>) {
     <#if api.responseType != "void">
         return ${serviceName?uncap_first}Service.${api.methodName}(<#list api.paramList as param>${param.name}<#if param_has_next>, </#if></#list>);
