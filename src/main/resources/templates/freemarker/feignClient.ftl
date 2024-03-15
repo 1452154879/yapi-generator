@@ -17,7 +17,7 @@ import java.util.List;
  * @date ${.now?string("yyyy/MM/dd")}
  */
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
-@FeignClient(name = "${serviceName?uncap_first}Client", url = "${r'${gateway.url}'}", contextId = "${serviceName?uncap_first}Client" configuration = FeignRequestInterceptor.class)
+@FeignClient(name = "${serviceName?uncap_first}Client", url = "${r'${params.gatewayAppUrl}'}")
 public class ${serviceName}Client {
 
     <#list apiList as api>
@@ -32,7 +32,7 @@ public class ${serviceName}Client {
     </#if>
      */
     @PostMapping(value = "${api.path}")
-    public ${api.responseType} ${api.methodName}(<#list api.paramList as param><#if param.annotation??>${param.annotation} </#if>${param.type} ${param.name}<#if param_has_next>, </#if></#list>);
+    ${api.responseType} ${api.methodName}(<#list api.paramList as param><#if param.annotation??>${param.annotation} </#if>${param.type} ${param.name}<#if param_has_next>, </#if></#list>);
 
     </#list>
 }

@@ -22,7 +22,7 @@ public class ${serviceName}ServiceImpl implements ${serviceName}Service {
     @Override
     public ${api.responseType} ${api.methodName}(<#list api.paramList as param>${param.type} ${param.name}<#if param_has_next>, </#if></#list>) {
         <#if api.responseType != "void">
-        return ${serviceName?uncap_first}Client.${api.methodName}(<#list api.paramList as param>${param.name}<#if param_has_next>, </#if></#list>);;
+        return ${serviceName?uncap_first}Client.${api.methodName}(<#list api.paramList as param>${param.name}<#if param_has_next>, </#if></#list>);
         </#if>
     }
 

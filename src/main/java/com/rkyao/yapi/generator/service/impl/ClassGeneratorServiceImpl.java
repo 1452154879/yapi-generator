@@ -29,8 +29,6 @@ public class ClassGeneratorServiceImpl implements ClassGeneratorService {
     private static final Logger logger = LoggerFactory.getLogger(ClassGeneratorServiceImpl.class);
     @Value("${yapi.generator.class.defaultName:My}")
     private String classDefaultName;
-    @Value("${yapi.generator.class.entityPrefix}")
-    private String entityPrefix;
     @Autowired
     private FreemarkerGenerator freemarkerGenerator;
 

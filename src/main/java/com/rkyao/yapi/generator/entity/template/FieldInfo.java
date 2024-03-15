@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * 字段信息
  *
@@ -42,5 +44,8 @@ public class FieldInfo {
      * 参数注解
      */
     private String annotation;
-
+    /**
+     * 校验注解
+     */
+    private List<String> checkAnnotationList;
 }

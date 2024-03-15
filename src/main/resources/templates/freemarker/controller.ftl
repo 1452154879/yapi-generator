@@ -37,7 +37,7 @@ public class ${serviceName}Controller {
     </#if>
      */
     @PostMapping("/${api.methodName}")
-    public ${api.responseType} ${api.methodName}(<#list api.paramList as param><#if param.annotation??>${param.annotation} </#if>${param.type} ${param.name}<#if param_has_next>, </#if></#list>) {
+    public ${api.responseType} ${api.methodName}(<#list api.paramList as param><#if param.annotation??>${param.annotation} @Validated </#if>${param.type} ${param.name}<#if param_has_next>, </#if></#list>) {
     <#if api.responseType != "void">
         return ${serviceName?uncap_first}Service.${api.methodName}(<#list api.paramList as param>${param.name}<#if param_has_next>, </#if></#list>);
     </#if>
