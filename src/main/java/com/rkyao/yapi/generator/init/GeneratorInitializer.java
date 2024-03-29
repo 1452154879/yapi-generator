@@ -8,6 +8,7 @@ import com.rkyao.yapi.generator.service.ClassInfoTransformService;
 import com.rkyao.yapi.generator.service.YapiOpenapiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -36,10 +37,15 @@ public class GeneratorInitializer {
 
     @Autowired
     private ClassInfoTransformService classInfoTransformService;
-
+    @Value("${yapi.init.component.select}")
+    String initSelect;
+    private final String  initComponentName="generator";
     @PostConstruct
     public void init() {
         log.info("开始生成接口代码...");
+        if (!initSelect.equals(initComponentName)){
+            return;
+        }
 
         // 获取接口id列表
         List<String> interfaceIds = getInterfaceIds();
