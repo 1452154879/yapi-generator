@@ -19,8 +19,10 @@ import java.util.List;
  */
 @Data
 @Builder
+<#if fieldList.size()!=0>
 @NoArgsConstructor
 @AllArgsConstructor
+</#if>
 public class ${className}{
 
 <#list fieldList as field>

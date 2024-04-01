@@ -91,12 +91,13 @@ public class ClassInfoTransformServiceImpl implements ClassInfoTransformService 
             // 参数信息字符串 body中的参数 只支持json格式
             // todo 支持body中的 form、file、raw格式
             YapiPropertiesDTO reqPropertiesDTO = JSONObject.parseObject(interfaceInfoDTO.getData().getReqBodyOther(), YapiPropertiesDTO.class);
+            reqPropertiesDTO.setDescription(dataDTO.getTitle());
             // 参数信息解析
             List<EntityInfo> reqEntityInfoList = analysisEntityInfo(reqPropertiesDTO, "Dto", new ArrayList<>(),true);
-
             // 返回信息字符串
             YapiPropertiesDTO respPropertiesDTO = JSONObject.parseObject(interfaceInfoDTO.getData().getResBody(),
                     YapiPropertiesDTO.class);
+            respPropertiesDTO.setDescription(dataDTO.getTitle());
             String type=null;
             if (respPropertiesDTO.getProperties().get("data")!=null) {
                 type = respPropertiesDTO.getProperties().get("data").getType();
