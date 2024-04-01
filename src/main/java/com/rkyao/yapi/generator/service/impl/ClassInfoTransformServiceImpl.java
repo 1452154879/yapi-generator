@@ -9,6 +9,7 @@ import com.rkyao.yapi.generator.entity.template.FieldInfo;
 import com.rkyao.yapi.generator.entity.template.ServiceInfo;
 import com.rkyao.yapi.generator.entity.yapi.YapiInterfaceInfoDTO;
 import com.rkyao.yapi.generator.entity.yapi.YapiPropertiesDTO;
+import com.rkyao.yapi.generator.enums.CheckAnnotationEnums;
 import com.rkyao.yapi.generator.enums.FieldType;
 import com.rkyao.yapi.generator.enums.GeneratingPatterns;
 import com.rkyao.yapi.generator.service.ClassInfoTransformService;
@@ -91,7 +92,7 @@ public class ClassInfoTransformServiceImpl implements ClassInfoTransformService 
             // todo 支持body中的 form、file、raw格式
             YapiPropertiesDTO reqPropertiesDTO = JSONObject.parseObject(interfaceInfoDTO.getData().getReqBodyOther(), YapiPropertiesDTO.class);
             // 参数信息解析
-            List<EntityInfo> reqEntityInfoList = analysisEntityInfo(reqPropertiesDTO, "Dto", new ArrayList<>());
+            List<EntityInfo> reqEntityInfoList = analysisEntityInfo(reqPropertiesDTO, "Dto", new ArrayList<>(),true);
 
             // 返回信息字符串
             YapiPropertiesDTO respPropertiesDTO = JSONObject.parseObject(interfaceInfoDTO.getData().getResBody(),
@@ -106,7 +107,7 @@ public class ClassInfoTransformServiceImpl implements ClassInfoTransformService 
                 }
             }
             // 返回信息解析
-            List<EntityInfo> respEntityInfoList = analysisEntityInfo(respPropertiesDTO, "Vo", new ArrayList<>());
+            List<EntityInfo> respEntityInfoList = analysisEntityInfo(respPropertiesDTO, "Vo", new ArrayList<>(),false);
 
             List<EntityInfo> allEntityInfoList = new ArrayList<>();
             allEntityInfoList.addAll(reqEntityInfoList);
@@ -266,7 +267,7 @@ public class ClassInfoTransformServiceImpl implements ClassInfoTransformService 
 //        List<EntityInfo> entityInfoList = analysisEntityInfo(propertiesDTO, "RootDTO", null);
     }
 
-    private List<EntityInfo> analysisEntityInfo(YapiPropertiesDTO propertiesDTO, String className, List<EntityInfo> entityInfoList) {
+    private List<EntityInfo> analysisEntityInfo(YapiPropertiesDTO propertiesDTO, String className, List<EntityInfo> entityInfoList,boolean hasCheck) {
         if (propertiesDTO == null || !FieldType.OBJECT.getSource().equals(propertiesDTO.getType())) {
             return entityInfoList;
         }
@@ -302,6 +303,12 @@ public class ClassInfoTransformServiceImpl implements ClassInfoTransformService 
             fieldInfo.setName(fieldName);
             fieldInfo.setDesc(StringUtils.isEmpty(dto.getDescription()) ? fieldName : dto.getDescription());
             fieldInfo.setRequired(false);
+            //增加校验注解
+            if (hasCheck && propertiesDTO.getRequired().contains(fieldInfo.getName())){
+                CheckAnnotationEnums annotationEnum = CheckAnnotationEnums.getEnum(fieldType.getSource());
+                String checkAnnotationStr = annotationEnum.getFormatAnnotationStr(fieldInfo.getDesc());
+                fieldInfo.setCheckAnnotationList(Arrays.asList(checkAnnotationStr));
+            }
 
             fieldInfoList.add(fieldInfo);
         }
@@ -319,11 +326,11 @@ public class ClassInfoTransformServiceImpl implements ClassInfoTransformService 
             String fieldName = entry.getKey();
             YapiPropertiesDTO dto = entry.getValue();
             if (FieldType.OBJECT.getSource().equals(dto.getType())) {
-                analysisEntityInfo(dto, getFieldType(fieldName), entityInfoList);
+                analysisEntityInfo(dto, getFieldType(fieldName), entityInfoList,hasCheck);
             }
             if (FieldType.ARRAY.getSource().equals(dto.getType())) {
                 if (dto.getItems() != null && FieldType.OBJECT.getSource().equals(dto.getItems().getType())) {
-                    analysisEntityInfo(dto.getItems(), getFieldType(fieldName), entityInfoList);
+                    analysisEntityInfo(dto.getItems(), getFieldType(fieldName), entityInfoList,hasCheck);
                 }
             }
         }

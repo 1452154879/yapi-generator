@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import java.util.List;
 
@@ -21,11 +23,14 @@ import java.util.List;
 @AllArgsConstructor
 public class ${className}{
 
-    <#list fieldList as field>
+<#list fieldList as field>
     /**
      * ${field.desc}
      */
+  <#list field.checkAnnotationList as annotation>
+    ${annotation}
+  </#list>
     private ${field.type} ${field.name};
 
-    </#list>
+</#list>
 }

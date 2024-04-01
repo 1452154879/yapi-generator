@@ -5,7 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * class
@@ -26,5 +28,7 @@ public class YapiPropertiesDTO {
     private Map<String, YapiPropertiesDTO> properties;
 
     private YapiPropertiesDTO items;
+
+    private Set<String> required;
 
 }

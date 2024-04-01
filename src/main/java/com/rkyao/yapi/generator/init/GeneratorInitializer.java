@@ -63,10 +63,13 @@ public class GeneratorInitializer {
         Set<String> interfaceIdSet = new HashSet<>();
 
         String catId = yapiGeneratorConfig.getCatId();
-        if (!StringUtils.isEmpty(catId)) {
-            List<String> ids = yapiOpenapiService.listCatIds(catId);
-            if (!CollectionUtils.isEmpty(ids)) {
-                interfaceIdSet.addAll(ids);
+        List<String> catList = Arrays.asList(catId.split(","));
+        if (!CollectionUtils.isEmpty(catList)) {
+            for (String cat : catList) {
+                List<String> ids = yapiOpenapiService.listCatIds(cat);
+                if (!CollectionUtils.isEmpty(ids)) {
+                    interfaceIdSet.addAll(ids);
+                }
             }
         }
 
