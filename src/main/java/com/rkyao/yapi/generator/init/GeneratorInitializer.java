@@ -1,5 +1,6 @@
 package com.rkyao.yapi.generator.init;
 
+import cn.hutool.core.util.StrUtil;
 import com.rkyao.yapi.generator.config.YapiGeneratorConfig;
 import com.rkyao.yapi.generator.entity.template.ServiceInfo;
 import com.rkyao.yapi.generator.enums.GeneratingPatterns;
@@ -64,7 +65,7 @@ public class GeneratorInitializer {
 
         String catId = yapiGeneratorConfig.getCatId();
         List<String> catList = Arrays.asList(catId.split(","));
-        if (!CollectionUtils.isEmpty(catList)) {
+        if (StrUtil.isNotBlank(catId) && !CollectionUtils.isEmpty(catList)) {
             for (String cat : catList) {
                 List<String> ids = yapiOpenapiService.listCatIds(cat);
                 if (!CollectionUtils.isEmpty(ids)) {

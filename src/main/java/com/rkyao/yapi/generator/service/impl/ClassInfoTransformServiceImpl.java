@@ -305,12 +305,11 @@ public class ClassInfoTransformServiceImpl implements ClassInfoTransformService 
             fieldInfo.setDesc(StringUtils.isEmpty(dto.getDescription()) ? fieldName : dto.getDescription());
             fieldInfo.setRequired(false);
             //增加校验注解
-            if (hasCheck && propertiesDTO.getRequired().contains(fieldInfo.getName())){
+            if (hasCheck && !CollectionUtils.isEmpty(propertiesDTO.getRequired()) && propertiesDTO.getRequired().contains(fieldInfo.getName())) {
                 CheckAnnotationEnums annotationEnum = CheckAnnotationEnums.getEnum(fieldType.getSource());
                 String checkAnnotationStr = annotationEnum.getFormatAnnotationStr(fieldInfo.getDesc());
                 fieldInfo.setCheckAnnotationList(Arrays.asList(checkAnnotationStr));
             }
-
             fieldInfoList.add(fieldInfo);
         }
 

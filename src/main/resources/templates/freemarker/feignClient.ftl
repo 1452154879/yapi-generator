@@ -17,8 +17,8 @@ import java.util.List;
  * @date ${.now?string("yyyy/MM/dd")}
  */
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
-@FeignClient(name = "${serviceName?uncap_first}Client", url = "${r'${params.gatewayAppUrl}'}")
-public class ${serviceName}Client {
+@FeignClient(name = "${serviceName?uncap_first}Feign", url = "${r'${params.gatewayAppUrl}'}")
+public interface ${serviceName}Feign {
 
     <#list apiList as api>
     /**
