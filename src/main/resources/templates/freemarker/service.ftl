@@ -1,6 +1,7 @@
 package ${basePackage}.service;
 
-import ${basePackage}.entity.*;
+import ${packageInfo.entityDtoPath}.*;
+import ${packageInfo.entityVoPath}.*;
 import com.postar.gtzt.common.model.ResultData;
 import java.util.List;
 

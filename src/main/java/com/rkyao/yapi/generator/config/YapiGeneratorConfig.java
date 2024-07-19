@@ -38,4 +38,6 @@ public class YapiGeneratorConfig {
     @Value("${yapi.generator.class.defaultName:My}")
     private String classDefaultName;
 
+    @Value("${yapi.generator.class.projectName:}")
+    private String projectName;
 }

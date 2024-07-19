@@ -1,5 +1,7 @@
 package com.rkyao.yapi.generator.entity.template;
 
+import com.rkyao.yapi.generator.entity.PackageEntity;
+import com.rkyao.yapi.generator.util.PathUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,8 +38,28 @@ public class ServiceInfo {
     private String basePackage;
 
     /**
+     * 各类包路径
+     */
+    private PackageEntity packageInfo;
+
+    /**
+     * 项目名称
+     */
+    private String projectName;
+
+    /**
      * 接口列表
      */
     private List<ApiInfo> apiList;
 
+    public void fillPackageInfo(){
+        PackageEntity packageEntity = new PackageEntity();
+        packageEntity.setControllerPath(PathUtils.CONTROLLER.getPath(this));
+        packageEntity.setFeignPath(PathUtils.FEIGN.getPath(this));
+        packageEntity.setServicePath(PathUtils.SERVICE.getPath(this));
+        packageEntity.setImplPath(PathUtils.IMPL.getPath(this));
+        packageEntity.setEntityDtoPath(PathUtils.ENTITY_DTO.getPath(this));
+        packageEntity.setEntityVoPath(PathUtils.ENTITY_VO.getPath(this));
+        this.setPackageInfo(packageEntity);
+    }
 }

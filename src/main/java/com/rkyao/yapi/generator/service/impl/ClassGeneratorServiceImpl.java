@@ -8,6 +8,7 @@ import com.rkyao.yapi.generator.entity.template.ServiceInfo;
 import com.rkyao.yapi.generator.service.ClassGeneratorService;
 import com.rkyao.yapi.generator.util.FileUtil;
 import com.rkyao.yapi.generator.util.FreemarkerGenerator;
+import com.rkyao.yapi.generator.util.PathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class ClassGeneratorServiceImpl implements ClassGeneratorService {
         FileUtil.delFile(new File(GeneratorConstant.OUTPUT));
         for (ServiceInfo serviceInfo : serviceInfoList) {
             String basePath = serviceInfo.getBasePackage().replaceAll("\\.", "\\\\");
+            serviceInfo.fillPackageInfo();
             // 输出目录初始化
             if (StrUtil.isBlank(classDefaultName)){
                 throw new NullPointerException("classDefaultName不得为空");
@@ -64,7 +66,6 @@ public class ClassGeneratorServiceImpl implements ClassGeneratorService {
             // 生成entity类文件
             for (ApiInfo apiInfo : serviceInfo.getApiList()) {
                 for (EntityInfo entityInfo : apiInfo.getEntityInfoList()) {
-
                     String entityBasePath = String.format(GeneratorConstant.ENTITY_PATH, basePath);
                     if (entityInfo.getClassName().endsWith("Dto")){
                         entityBasePath=String.format(GeneratorConstant.ENTITY_DTO_PATH, basePath,classDefaultName);

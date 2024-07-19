@@ -1,7 +1,7 @@
 package ${basePackage}.service.impl;
 
-import ${basePackage}.entity.*;
-import ${basePackage}.service.*;
+import ${packageInfo.entityDtoPath}.*;
+import ${packageInfo.entityVoPath}.*;
 import com.postar.gtzt.common.model.ResultData;
 import org.springframework.stereotype.Service;
 

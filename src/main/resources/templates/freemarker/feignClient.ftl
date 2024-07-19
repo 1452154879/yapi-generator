@@ -1,7 +1,7 @@
 package ${basePackage}.controller;
 
-import ${basePackage}.entity.*;
-import ${basePackage}.service.*;
+import ${packageInfo.entityDtoPath}.*;
+import ${packageInfo.entityVoPath}.*;
 import com.postar.gtzt.common.model.ResultData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

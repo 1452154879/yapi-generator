@@ -54,6 +54,7 @@ public class ClassInfoTransformServiceImpl implements ClassInfoTransformService 
         switch (pattern) {
             case SINGLE:
                 ServiceInfo serviceInfo = new ServiceInfo();
+                serviceInfo.setProjectName(yapiGeneratorConfig.getProjectName());
                 serviceInfo.setServiceName(yapiGeneratorConfig.getClassDefaultName());
                 serviceInfo.setBasePackage(yapiGeneratorConfig.getBasePackage());
                 serviceInfo.setApiList(apiInfoList);

@@ -11,11 +11,12 @@ yapi:
       path: ${yapi.url}/api/interface/list_cat?page=1&limit=1000&token=${yapi.project.token}
   generator:
     base:
-      package: com.rkyao.yapi.generator
+      package: com.postar.gtqt.operate
     class:
       patterns: SINGLE
       author: youjunhui
       defaultName: EquipApp
+      projectName: equip
       serviceDesc: 智能POS应用管理
       entityPrefix:
       validatedAnnotation: true
