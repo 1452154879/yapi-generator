@@ -2,6 +2,7 @@ package ${basePackage}.service.impl;
 
 import ${basePackage}.entity.*;
 import ${basePackage}.service.*;
+import com.postar.gtzt.common.model.ResultData;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

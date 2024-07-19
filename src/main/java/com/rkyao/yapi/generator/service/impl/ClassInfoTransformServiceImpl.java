@@ -42,6 +42,8 @@ public class ClassInfoTransformServiceImpl implements ClassInfoTransformService 
     @Autowired
     private YapiOpenapiService yapiOpenapiService;
 
+    @Value("${yapi.generator.class.serviceDesc:ClassDesc}")
+    private String serviceDesc;
     @Override
     public List<ServiceInfo> getServiceInfoList(List<String> idList, GeneratingPatterns pattern) {
         List<ApiInfo> apiInfoList = getApiInfoList(idList);
@@ -55,6 +57,7 @@ public class ClassInfoTransformServiceImpl implements ClassInfoTransformService 
                 serviceInfo.setServiceName(yapiGeneratorConfig.getClassDefaultName());
                 serviceInfo.setBasePackage(yapiGeneratorConfig.getBasePackage());
                 serviceInfo.setApiList(apiInfoList);
+                serviceInfo.setServiceDesc(serviceDesc);
                 return Collections.singletonList(serviceInfo);
             case MULTIPLE:
                 List<ServiceInfo> serviceInfoList = new ArrayList<>();
@@ -212,7 +215,7 @@ public class ClassInfoTransformServiceImpl implements ClassInfoTransformService 
         }else{
             fieldTypeStr = respEntityInfoList.get(0).getClassName();
         }
-        if ("".equals(fieldTypeStr)){
+        if ("".equals(fieldTypeStr) || respEntityInfoList.get(0).getFieldList().size()==0){
             fieldTypeStr="Object";
         }
         return String.format(resultStr,fieldTypeStr);

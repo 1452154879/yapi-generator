@@ -1,5 +1,6 @@
 package com.rkyao.yapi.generator.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.rkyao.yapi.generator.constant.GeneratorConstant;
 import com.rkyao.yapi.generator.entity.template.ApiInfo;
 import com.rkyao.yapi.generator.entity.template.EntityInfo;
@@ -43,6 +44,9 @@ public class ClassGeneratorServiceImpl implements ClassGeneratorService {
         for (ServiceInfo serviceInfo : serviceInfoList) {
             String basePath = serviceInfo.getBasePackage().replaceAll("\\.", "\\\\");
             // 输出目录初始化
+            if (StrUtil.isBlank(classDefaultName)){
+                throw new NullPointerException("classDefaultName不得为空");
+            }
             classDefaultName=classDefaultName.substring(0,1).toLowerCase()+classDefaultName.substring(1);
             initDirectory(basePath,classDefaultName);
 
@@ -60,10 +64,14 @@ public class ClassGeneratorServiceImpl implements ClassGeneratorService {
             // 生成entity类文件
             for (ApiInfo apiInfo : serviceInfo.getApiList()) {
                 for (EntityInfo entityInfo : apiInfo.getEntityInfoList()) {
+
                     String entityBasePath = String.format(GeneratorConstant.ENTITY_PATH, basePath);
                     if (entityInfo.getClassName().endsWith("Dto")){
                         entityBasePath=String.format(GeneratorConstant.ENTITY_DTO_PATH, basePath,classDefaultName);
                     }else if(entityInfo.getClassName().endsWith("Vo")){
+                        if (entityInfo.getFieldList().size()==0){
+                            continue;
+                        }
                         entityBasePath=String.format(GeneratorConstant.ENTITY_VO_PATH, basePath,classDefaultName);
                     }
                     String entityPath = entityBasePath + GeneratorConstant.SEPARATOR + entityInfo.getClassName() + ".java";

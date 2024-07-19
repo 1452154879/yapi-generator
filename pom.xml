@@ -99,7 +99,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
 					<excludes>
-						<!-- application.properties 不放到jar包里 -->
+						<!-- application2.properties 不放到jar包里 -->
 						<exclude>application.properties</exclude>
 					</excludes>
 				</configuration>

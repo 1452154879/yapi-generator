@@ -1,0 +1,39 @@
+yapi:
+  url: https://github.com/
+  project:
+    token: 85e47c74018cea415f7171d73c8e292f07909cb9b7ff3120c8546ea4f39ad65b
+  api:
+    interface:
+      ids:
+      path: ${yapi.url}/api/interface/get?token=${yapi.project.token}
+    cat:
+      id: 2102
+      path: ${yapi.url}/api/interface/list_cat?page=1&limit=1000&token=${yapi.project.token}
+  generator:
+    base:
+      package: com.rkyao.yapi.generator
+    class:
+      patterns: SINGLE
+      author: youjunhui
+      defaultName: AppSerManage
+      serviceDesc: 应用管理
+      entityPrefix: ''
+      validatedAnnotation: true
+  init:
+    component:
+      select: generator
+  request:
+    url: https://github.com/
+spring:
+  freemarker:
+    template-loader-path:classpath: /templates
+    cache: false
+    charset: UTF-8
+    check-template-location: true
+    content-type: text/html
+    expose-request-attributes: true
+    expose-session-attributes: true
+    request-context-attribute: request
+    suffix: .ftl
+    settings:
+      classic_compatible: true
