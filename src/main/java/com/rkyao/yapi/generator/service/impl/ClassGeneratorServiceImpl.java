@@ -2,13 +2,13 @@ package com.rkyao.yapi.generator.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.rkyao.yapi.generator.constant.GeneratorConstant;
+import com.rkyao.yapi.generator.entity.PackageEntity;
 import com.rkyao.yapi.generator.entity.template.ApiInfo;
 import com.rkyao.yapi.generator.entity.template.EntityInfo;
 import com.rkyao.yapi.generator.entity.template.ServiceInfo;
 import com.rkyao.yapi.generator.service.ClassGeneratorService;
 import com.rkyao.yapi.generator.util.FileUtil;
 import com.rkyao.yapi.generator.util.FreemarkerGenerator;
-import com.rkyao.yapi.generator.util.PathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,13 +50,13 @@ public class ClassGeneratorServiceImpl implements ClassGeneratorService {
                 throw new NullPointerException("classDefaultName不得为空");
             }
             classDefaultName=classDefaultName.substring(0,1).toLowerCase()+classDefaultName.substring(1);
-            initDirectory(basePath,classDefaultName);
+            initDirectory(serviceInfo.getPackageGeneratorInfo(),classDefaultName);
 
             // 生成controller、service、impl类文件
-            String controllerPath = String.format(GeneratorConstant.CONTROLLER_PATH, basePath) + GeneratorConstant.SEPARATOR + serviceInfo.getServiceName() + "Controller.java";
-            String feignPath = String.format(GeneratorConstant.FEIGN_PATH, basePath) + GeneratorConstant.SEPARATOR + serviceInfo.getServiceName() + "Feign.java";
-            String servicePath = String.format(GeneratorConstant.SERVICE_PATH, basePath) + GeneratorConstant.SEPARATOR + serviceInfo.getServiceName() + "Service.java";
-            String implPath = String.format(GeneratorConstant.IMPL_PATH, basePath) + GeneratorConstant.SEPARATOR + serviceInfo.getServiceName() + "ServiceImpl.java";
+            String controllerPath = getFilePath(serviceInfo.getPackageGeneratorInfo().getControllerPath()) + GeneratorConstant.SEPARATOR + serviceInfo.getServiceName() + "Controller.java";
+            String feignPath = getFilePath(serviceInfo.getPackageGeneratorInfo().getFeignPath()) + GeneratorConstant.SEPARATOR + serviceInfo.getServiceName() + "Feign.java";
+            String servicePath = getFilePath(serviceInfo.getPackageGeneratorInfo().getServicePath()) + GeneratorConstant.SEPARATOR + serviceInfo.getServiceName() + "Service.java";
+            String implPath = getFilePath(serviceInfo.getPackageGeneratorInfo().getImplPath()) + GeneratorConstant.SEPARATOR + serviceInfo.getServiceName() + "ServiceImpl.java";
 
             freemarkerGenerator.createFile(GeneratorConstant.CONTROLLER_FTL, controllerPath, serviceInfo);
             freemarkerGenerator.createFile(GeneratorConstant.FEIGN_FTL, feignPath, serviceInfo);
@@ -66,14 +66,14 @@ public class ClassGeneratorServiceImpl implements ClassGeneratorService {
             // 生成entity类文件
             for (ApiInfo apiInfo : serviceInfo.getApiList()) {
                 for (EntityInfo entityInfo : apiInfo.getEntityInfoList()) {
-                    String entityBasePath = String.format(GeneratorConstant.ENTITY_PATH, basePath);
-                    if (entityInfo.getClassName().endsWith("Dto")){
-                        entityBasePath=String.format(GeneratorConstant.ENTITY_DTO_PATH, basePath,classDefaultName);
-                    }else if(entityInfo.getClassName().endsWith("Vo")){
+                    entityInfo.setEntityDtoPath(serviceInfo.getPackageInfo().getEntityDtoPath());
+                    entityInfo.setEntityVoPath(serviceInfo.getPackageInfo().getEntityVoPath());
+                    String entityBasePath = getFilePath(serviceInfo.getPackageGeneratorInfo().getEntityDtoPath());
+                    if(entityInfo.getClassName().endsWith("Vo")){
                         if (entityInfo.getFieldList().size()==0){
                             continue;
                         }
-                        entityBasePath=String.format(GeneratorConstant.ENTITY_VO_PATH, basePath,classDefaultName);
+                        entityBasePath=getFilePath(serviceInfo.getPackageGeneratorInfo().getEntityVoPath());
                     }
                     String entityPath = entityBasePath + GeneratorConstant.SEPARATOR + entityInfo.getClassName() + ".java";
                     freemarkerGenerator.createFile(GeneratorConstant.ENTITY_FTL, entityPath, entityInfo);
@@ -83,14 +83,17 @@ public class ClassGeneratorServiceImpl implements ClassGeneratorService {
         }
     }
 
-    private void initDirectory(String basePath,String classDefaultName) {
-        new File(String.format(GeneratorConstant.CONTROLLER_PATH, basePath)).mkdirs();
-        new File(String.format(GeneratorConstant.FEIGN_PATH, basePath)).mkdirs();
-        new File(String.format(GeneratorConstant.SERVICE_PATH, basePath)).mkdirs();
-        new File(String.format(GeneratorConstant.IMPL_PATH, basePath)).mkdirs();
-        new File(String.format(GeneratorConstant.ENTITY_PATH, basePath)).mkdirs();
-        new File(String.format(GeneratorConstant.ENTITY_DTO_PATH, basePath,classDefaultName)).mkdirs();
-        new File(String.format(GeneratorConstant.ENTITY_VO_PATH, basePath,classDefaultName)).mkdirs();
+    private void initDirectory(PackageEntity packageGeneratorInfo, String classDefaultName) {
+        new File(getFilePath(packageGeneratorInfo.getControllerPath())).mkdirs();
+        new File(getFilePath(packageGeneratorInfo.getFeignPath())).mkdirs();
+        new File(getFilePath(packageGeneratorInfo.getServicePath())).mkdirs();
+        new File(getFilePath(packageGeneratorInfo.getImplPath())).mkdirs();
+        new File(getFilePath(packageGeneratorInfo.getEntityDtoPath())).mkdirs();
+        new File(getFilePath(packageGeneratorInfo.getEntityVoPath())).mkdirs();
+    }
+
+    private String getFilePath(String path){
+        return String.format(GeneratorConstant.BASE_CREATE_PATH,path);
     }
 
 }

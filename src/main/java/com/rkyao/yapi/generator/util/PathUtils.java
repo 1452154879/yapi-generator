@@ -28,7 +28,7 @@ public enum PathUtils {
     FEIGN() {
         @Override
         public String getPath(ServiceInfo serviceInfo) {
-            return serviceInfo.getBasePackage()+".feign."+serviceInfo.getProjectName()+serviceInfo.getServiceName().toLowerCase();
+            return serviceInfo.getBasePackage()+".feign."+serviceInfo.getProjectName()+"."+serviceInfo.getServiceName().toLowerCase();
         }
     },
     ENTITY_DTO(){

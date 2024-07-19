@@ -2,9 +2,11 @@ package ${basePackage}.service.impl;
 
 import ${packageInfo.entityDtoPath}.*;
 import ${packageInfo.entityVoPath}.*;
+import ${packageInfo.servicePath}.*;
+import ${packageInfo.feignPath}.*;
 import com.postar.gtzt.common.model.ResultData;
 import org.springframework.stereotype.Service;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 /**

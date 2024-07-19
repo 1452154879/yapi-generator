@@ -23,28 +23,29 @@ public class GeneratorConstant {
      */
     public static final String OUTPUT = "output";
 
+    public static final String BASE_CREATE_PATH=OUTPUT + SEPARATOR + "%s";
     /**
      * controller class文件保存目录
      */
-    public static final String CONTROLLER_PATH = OUTPUT + SEPARATOR + "%s" + SEPARATOR + "controller";
+    public static final String CONTROLLER_PATH = OUTPUT + SEPARATOR + "%s";
     /**
      * FEIGN class文件保存目录
      */
-    public static final String FEIGN_PATH = OUTPUT + SEPARATOR + "%s" + SEPARATOR + "feign";
+    public static final String FEIGN_PATH = OUTPUT + SEPARATOR + "%s";
     /**
      * service class文件保存目录
      */
-    public static final String SERVICE_PATH = OUTPUT + SEPARATOR + "%s" + SEPARATOR + "service";
+    public static final String SERVICE_PATH = OUTPUT + SEPARATOR + "%s";
 
     /**
      * impl class文件保存目录
      */
-    public static final String IMPL_PATH = OUTPUT + SEPARATOR + "%s" + SEPARATOR + "service" + SEPARATOR + "impl";
+    public static final String IMPL_PATH = OUTPUT + SEPARATOR + "%s";
 
     /**
      * entity class文件保存目录
      */
-    public static final String ENTITY_PATH = OUTPUT + SEPARATOR + "%s" + SEPARATOR + "entity";
+    public static final String ENTITY_PATH = OUTPUT + SEPARATOR + "%s";
     public static final String ENTITY_DTO_PATH = ENTITY_PATH+SEPARATOR+"%s"+"Dto";
     public static final String ENTITY_VO_PATH = ENTITY_PATH+SEPARATOR+"%s"+"Vo";
     /**

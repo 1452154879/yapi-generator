@@ -35,6 +35,14 @@ public class EntityInfo {
     private String basePackage;
 
     /**
+     * 接口类Dto基础路径
+     */
+    private String entityDtoPath;
+    /**
+     * 接口类Vo基础路径
+     */
+    private String entityVoPath;
+    /**
      * 字段信息列表
      */
     private List<FieldInfo> fieldList;

@@ -1,6 +1,7 @@
 package ${basePackage}.entity;
 
-import ${basePackage}.entity.*;
+import ${entityDtoPath}.*;
+import ${entityVoPath}.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

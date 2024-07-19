@@ -1,5 +1,6 @@
 package com.rkyao.yapi.generator.entity.template;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.rkyao.yapi.generator.entity.PackageEntity;
 import com.rkyao.yapi.generator.util.PathUtils;
 import lombok.AllArgsConstructor;
@@ -43,6 +44,11 @@ public class ServiceInfo {
     private PackageEntity packageInfo;
 
     /**
+     * 各类包路径
+     */
+    private PackageEntity packageGeneratorInfo;
+
+    /**
      * 项目名称
      */
     private String projectName;
@@ -61,5 +67,13 @@ public class ServiceInfo {
         packageEntity.setEntityDtoPath(PathUtils.ENTITY_DTO.getPath(this));
         packageEntity.setEntityVoPath(PathUtils.ENTITY_VO.getPath(this));
         this.setPackageInfo(packageEntity);
+        PackageEntity packageGeneratorInfo = BeanUtil.copyProperties(packageEntity, PackageEntity.class);
+        packageGeneratorInfo.setControllerPath(packageGeneratorInfo.getControllerPath().replaceAll("\\.", "\\\\"));
+        packageGeneratorInfo.setFeignPath(packageGeneratorInfo.getFeignPath().replaceAll("\\.", "\\\\"));
+        packageGeneratorInfo.setServicePath(packageGeneratorInfo.getServicePath().replaceAll("\\.", "\\\\"));
+        packageGeneratorInfo.setImplPath(packageGeneratorInfo.getImplPath().replaceAll("\\.", "\\\\"));
+        packageGeneratorInfo.setEntityDtoPath(packageGeneratorInfo.getEntityDtoPath().replaceAll("\\.", "\\\\"));
+        packageGeneratorInfo.setEntityVoPath(packageGeneratorInfo.getEntityVoPath().replaceAll("\\.", "\\\\"));
+        this.setPackageGeneratorInfo(packageGeneratorInfo);
     }
 }

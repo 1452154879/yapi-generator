@@ -3,12 +3,12 @@ package ${basePackage}.controller;
 import ${packageInfo.entityDtoPath}.*;
 import ${packageInfo.entityVoPath}.*;
 import com.postar.gtzt.common.model.ResultData;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
