@@ -7,7 +7,7 @@ yapi:
       ids:
       path: ${yapi.url}/api/interface/get?token=${yapi.project.token}
     cat:
-      id: 2102
+      id: 5516
       path: ${yapi.url}/api/interface/list_cat?page=1&limit=1000&token=${yapi.project.token}
   generator:
     base:
@@ -15,9 +15,9 @@ yapi:
     class:
       patterns: SINGLE
       author: youjunhui
-      defaultName: AppSerManage
-      serviceDesc: 应用管理
-      entityPrefix: ''
+      defaultName: EquipApp
+      serviceDesc: 智能POS应用管理
+      entityPrefix:
       validatedAnnotation: true
   init:
     component:

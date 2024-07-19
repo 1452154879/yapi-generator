@@ -52,7 +52,7 @@ public class ClassGeneratorServiceImpl implements ClassGeneratorService {
 
             // 生成controller、service、impl类文件
             String controllerPath = String.format(GeneratorConstant.CONTROLLER_PATH, basePath) + GeneratorConstant.SEPARATOR + serviceInfo.getServiceName() + "Controller.java";
-            String feignPath = String.format(GeneratorConstant.FEIGN_PATH, basePath) + GeneratorConstant.SEPARATOR + serviceInfo.getServiceName() + "Client.java";
+            String feignPath = String.format(GeneratorConstant.FEIGN_PATH, basePath) + GeneratorConstant.SEPARATOR + serviceInfo.getServiceName() + "Feign.java";
             String servicePath = String.format(GeneratorConstant.SERVICE_PATH, basePath) + GeneratorConstant.SEPARATOR + serviceInfo.getServiceName() + "Service.java";
             String implPath = String.format(GeneratorConstant.IMPL_PATH, basePath) + GeneratorConstant.SEPARATOR + serviceInfo.getServiceName() + "ServiceImpl.java";
 

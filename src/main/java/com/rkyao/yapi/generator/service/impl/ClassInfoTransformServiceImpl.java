@@ -94,9 +94,13 @@ public class ClassInfoTransformServiceImpl implements ClassInfoTransformService 
             // 参数信息字符串 body中的参数 只支持json格式
             // todo 支持body中的 form、file、raw格式
             YapiPropertiesDTO reqPropertiesDTO = JSONObject.parseObject(interfaceInfoDTO.getData().getReqBodyOther(), YapiPropertiesDTO.class);
-            reqPropertiesDTO.setDescription(dataDTO.getTitle());
-            // 参数信息解析
-            List<EntityInfo> reqEntityInfoList = analysisEntityInfo(reqPropertiesDTO, "Dto", new ArrayList<>(),true);
+            List<EntityInfo> reqEntityInfoList = new ArrayList<>();
+            if(!Objects.isNull(reqPropertiesDTO)) {
+                reqPropertiesDTO.setDescription(dataDTO.getTitle());
+                // 参数信息解析
+                reqEntityInfoList = analysisEntityInfo(reqPropertiesDTO, "Dto", new ArrayList<>(), true);
+
+            }
             // 返回信息字符串
             YapiPropertiesDTO respPropertiesDTO = JSONObject.parseObject(interfaceInfoDTO.getData().getResBody(),
                     YapiPropertiesDTO.class);
@@ -111,8 +115,7 @@ public class ClassInfoTransformServiceImpl implements ClassInfoTransformService 
                 }
             }
             // 返回信息解析
-            List<EntityInfo> respEntityInfoList = analysisEntityInfo(respPropertiesDTO, "Vo", new ArrayList<>(),false);
-
+            List<EntityInfo> respEntityInfoList = analysisEntityInfo(respPropertiesDTO, "Vo", new ArrayList<>(),false);;
             List<EntityInfo> allEntityInfoList = new ArrayList<>();
             allEntityInfoList.addAll(reqEntityInfoList);
             allEntityInfoList.addAll(respEntityInfoList);
